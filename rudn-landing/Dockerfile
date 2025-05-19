@@ -14,7 +14,6 @@ FROM nginx:latest
 RUN mkdir -p /logs
 COPY --from=cert-builder /etc/ssl/private/private.key /etc/ssl/private/private.key
 COPY --from=cert-builder /etc/ssl/cert/private.crt /etc/ssl/cert/private.crt
-
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY mime.types /etc/nginx/mime.types
 COPY --from=builder /app/build /usr/share/nginx/html

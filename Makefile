@@ -15,7 +15,9 @@ compose-down:
 	cd rudn-landing && docker-compose down
 
 add-hosts:
-	echo "127.0.0.1 landing.rudn.ru" | sudo tee -a /etc/hosts
+	@if ! grep -q "127.0.0.1 landing.rudn.ru" /etc/hosts; then \
+		echo "127.0.0.1 landing.rudn.ru" | sudo tee -a /etc/hosts; \
+	fi
 
 all: key cert add-hosts compose
 .PHONY: cert key all compose compose-build compose-down add-hosts
