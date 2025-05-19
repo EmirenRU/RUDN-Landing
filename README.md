@@ -1,1 +1,1 @@
-# RUDN-Landing
+# RUDN Landing
