@@ -16,14 +16,14 @@ const App = () => {
       title: "Foundation",
       description:
         "RUDN University was established in 1960 as the Peoples' Friendship University of Russia. It was created with a mission to foster international cooperation and educate future leaders from around the world.",
-      image: "https://s6.imgcdn.dev/Y61sw2.png",
+      image: "https://s6.imgcdn.dev/Y6GfSt.png",
 
     },
     {
       title: "Growth & Expansion",
       description:
         "Throughout the decades, RUDN expanded its academic programs, research capabilities, and global partnerships. The university became a hub for cultural exchange and scientific innovation.",
-      image: "https://placehold.co/600x400?text=Growth+%26+Expansion",
+      image: "https://avatars.dzeninfra.ru/get-zen_doc/3467499/pub_641dd9b014df5404716609e8_641ddb324874684d5accfa40/scale_1200",
     },
     {
       title: "Modernization",
@@ -111,7 +111,7 @@ const App = () => {
     <div className="position-relative"> 
       <div className="row">
       {stages.map((stage, index) => (
-        <div key={index} className="col-12 position-relative">
+        <div key={index} className="col-12 position-relative px-5 ">
           {/* Точка на линии */}
           <div 
             className="position-absolute start-50 translate-middle-x rounded-circle bg-primary border border-4 border-white"
@@ -126,12 +126,21 @@ const App = () => {
           {/* Карточка с чередованием */}
           <div className={`d-flex flex-column ${index % 2 === 0 ? 'flex-md-row-reverse' : 'flex-md-row'}`}>
             {/* Изображение (50% ширины) */}
-            <div className="p-0" style={{width:"70%"}}>
+<div
+    className=""
+    style={{
+        width: "70%",
+        paddingLeft: index % 2 === 0 ? "2.5%" : undefined,
+        paddingRight: index % 2 === 0 ? undefined : "2.5%",
+        paddingTop: "5%",
+        paddingBottom: "7%"
+    }}
+>
               <img
                 src={stage.image}
                 alt={stage.title}
-                className="img-fluid w-100 h-auto"
-                style={{minHeight: "250px", maxHeight: "600px", verticalAlign: "middle",  objectFit: "cover"}}
+                className="img-fluid h-auto"
+                style={{minHeight: "250px", maxHeight: "600px", verticalAlign: "middle"   }}
               />
             </div>
             
