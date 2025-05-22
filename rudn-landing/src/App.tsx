@@ -13,29 +13,54 @@ const App = () => {
 
   const stages = [
     {
-      title: "Foundation",
+      title: "Международная научная конференция на тему: «Наследие Патриса Лумумбы: идеи свободы, равенства и международного сотрудничества».",
       description:
         "RUDN University was established in 1960 as the Peoples' Friendship University of Russia. It was created with a mission to foster international cooperation and educate future leaders from around the world.",
-      image: "https://s6.imgcdn.dev/Y6GfSt.png",
+      image: "https://placehold.co/600x400?text=%D0%9C%D0%B5%D0%B6%D0%B4%D1%83%D0%BD%D0%B0%D1%80%D0%BE%D0%B4%D0%BD%D0%B0%D1%8F+%D0%BD%D0%B0%D1%83%D1%87%D0%BD%D0%B0%D1%8F+%D0%BA%D0%BE%D0%BD%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D1%8F",
 
     },
     {
-      title: "Growth & Expansion",
+      title: "Открытые лекции о деколонизации Африки и роли П. Лумумбы.",
       description:
         "Throughout the decades, RUDN expanded its academic programs, research capabilities, and global partnerships. The university became a hub for cultural exchange and scientific innovation.",
-      image: "https://avatars.dzeninfra.ru/get-zen_doc/3467499/pub_641dd9b014df5404716609e8_641ddb324874684d5accfa40/scale_1200",
+      image: "https://placehold.co/600x400?text=%D0%9E%D1%82%D0%BA%D1%80%D1%8B%D1%82%D1%8B%D0%B5+%D0%BB%D0%B5%D0%BA%D1%86%D0%B8%D0%B8+%D0%BE+%D0%B4%D0%B5%D0%BA%D0%BE%D0%BB%D0%BE%D0%BD%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8+%D0%90%D1%84%D1%80%D0%B8%D0%BA%D0%B8+%D0%B8+%D1%80%D0%BE%D0%BB%D0%B8+%D0%9F.+%D0%9B%D1%83%D0%BC%D1%83%D0%BC%D0%B1%D1%8B",
     },
     {
-      title: "Modernization",
+      title: "Выставка фотографий из архивов, посвященных Лумумбе и деколонизации Африки.",
       description:
         "In the 21st century, RUDN embraced modern education technologies, updated infrastructure, and strengthened its position among top global universities. New faculties and research centers were launched.",
-      image: "https://placehold.co/600x400?text=Modernization",
+      image: "https://placehold.co/600x400?text=%D0%92%D1%8B%D1%81%D1%82%D0%B0%D0%B2%D0%BA%D0%B0+%D1%84%D0%BE%D1%82%D0%BE%D0%B3%D1%80%D0%B0%D1%84%D0%B8%D0%B9+%D0%B8%D0%B7+%D0%B0%D1%80%D1%85%D0%B8%D0%B2%D0%BE%D0%B2,+%D0%BF%D0%BE%D1%81%D0%B2%D1%8F%D1%89%D0%B5%D0%BD%D0%BD%D1%8B%D1%85+%D0%9B%D1%83%D0%BC%D1%83%D0%BC%D0%B1%D0%B5",
     },
     {
-      title: "Global Leadership",
+      title: "Показ фильма RT, снятого к юбилею Лумумбы.",
+      description:
+          "Today, RUDN University stands as a leading educational and research institution with a diverse student body from over 150 countries and strong ties to industries and governments worldwide.",
+      image: "https://placehold.co/600x400?text=%D0%9F%D0%BE%D0%BA%D0%B0%D0%B7+%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%D0%B0+RT,+%D1%81%D0%BD%D1%8F%D1%82%D0%BE%D0%B3%D0%BE+%D0%BA+%D1%8E%D0%B1%D0%B8%D0%BB%D0%B5%D1%8E+%D0%9B%D1%83%D0%BC%D1%83%D0%BC%D0%B1%D1%8B.",
+    },
+    {
+      title: "Презентация книги о П. Лумумбе, автор Л.В. Пономаренко.",
+      description:
+          "Today, RUDN University stands as a leading educational and research institution with a diverse student body from over 150 countries and strong ties to industries and governments worldwide.",
+      image: "https://placehold.co/600x400?text=%D0%9F%D1%80%D0%B5%D0%B7%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F+%D0%BA%D0%BD%D0%B8%D0%B3%D0%B8+%D0%BE+%D0%9F.+%D0%9B%D1%83%D0%BC%D1%83%D0%BC%D0%B1%D0%B5,+%D0%B0%D0%B2%D1%82%D0%BE%D1%80+%D0%9B.%D0%92.+%D0%9F%D0%BE%D0%BD%D0%BE%D0%BC%D0%B0%D1%80%D0%B5%D0%BD%D0%BA%D0%BE.",
+    },
+    {
+      title: "Вечерний кинофестиваль для студентов РУДН с показом фильмов о борьбе за независимость.",
+      description:
+          "Today, RUDN University stands as a leading educational and research institution with a diverse student body from over 150 countries and strong ties to industries and governments worldwide.",
+      image: "https://placehold.co/600x400?text=%D0%92%D0%B5%D1%87%D0%B5%D1%80%D0%BD%D0%B8%D0%B9+%D0%BA%D0%B8%D0%BD%D0%BE%D1%84%D0%B5%D1%81%D1%82%D0%B8%D0%B2%D0%B0%D0%BB%D1%8C+%D0%B4%D0%BB%D1%8F+%D1%81%D1%82%D1%83%D0%B4%D0%B5%D0%BD%D1%82%D0%BE%D0%B2+%D0%A0%D0%A3%D0%94%D0%9D+%D1%81+%D0%BF%D0%BE%D0%BA%D0%B0%D0%B7%D0%BE%D0%BC+%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%D0%BE%D0%B2+%D0%BE+%D0%B1%D0%BE%D1%80%D1%8C%D0%B1%D0%B5+%D0%B7%D0%B0+%D0%BD%D0%B5%D0%B7%D0%B0%D0%B2%D0%B8%D1%81%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D1%8C.",
+    },
+    {
+      title: "Специальный номер газеты «Дружба», посвященный столетию Лумумбы.",
       description:
         "Today, RUDN University stands as a leading educational and research institution with a diverse student body from over 150 countries and strong ties to industries and governments worldwide.",
-      image: "https://placehold.co/600x400?text=Global+Leadership",
+      image: "https://placehold.co/600x400?text=%D0%A1%D0%BF%D0%B5%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9+%D0%BD%D0%BE%D0%BC%D0%B5%D1%80+%D0%B3%D0%B0%D0%B7%D0%B5%D1%82%D1%8B+%C2%AB%D0%94%D1%80%D1%83%D0%B6%D0%B1%D0%B0%C2%BB,+%D0%BF%D0%BE%D1%81%D0%B2%D1%8F%D1%89%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9+%D1%81%D1%82%D0%BE%D0%BB%D0%B5%D1%82%D0%B8%D1%8E+%D0%9B%D1%83%D0%BC%D1%83%D0%BC%D0%B1%D1%8B.",
+    },
+
+    {
+      title: "Памятная церемония с возложением цветов к памятнику П. Лумумбе.",
+      description:
+          "Today, RUDN University stands as a leading educational and research institution with a diverse student body from over 150 countries and strong ties to industries and governments worldwide.",
+      image: "https://placehold.co/600x400?text=%D0%9F%D0%B0%D0%BC%D1%8F%D1%82%D0%BD%D0%B0%D1%8F+%D1%86%D0%B5%D1%80%D0%B5%D0%BC%D0%BE%D0%BD%D0%B8%D1%8F+%D1%81+%D0%B2%D0%BE%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5%D0%BC+%D1%86%D0%B2%D0%B5%D1%82%D0%BE%D0%B2+%D0%BA+%D0%BF%D0%B0%D0%BC%D1%8F%D1%82%D0%BD%D0%B8%D0%BA%D1%83+%D0%9F.+%D0%9B%D1%83%D0%BC%D1%83%D0%BC%D0%B1%D0%B5.",
     },
   ];
 
@@ -81,13 +106,15 @@ const App = () => {
     }}
   ></div>
 
-  <div className="container-fluid position-relative z-1 text-white d-flex flex-grow-1 flex-column align-items-center" style={{minHeight:"100%"}}>
+  <div className="container-fluid position-relative z-1 text-white d-flex flex-grow-1 flex-column align-items-center justify-content-center" style={{minHeight:"100%"}}>
     <h2 className="display-5 fw-bold mb-4" style={{textShadow: "1px 1px 1px rgba(2,  62,  74, 1)"}}>
-      History and Development of RUDN University
+      Празднование 100-летия Патриса Лумумбы
     </h2>
     <p className="lead mb-4" style={{textShadow: "1px 1px 1px rgba(2,  62,  74, 1)"}}>
-      Explore the four major stages that shaped one of Russia's most
-      prestigious universities.
+      В июле 2025 года исполняется 100 лет со дня рождения Патриса Лумумбы,
+      первого премьер-министра Демократической Республики Конго и национального героя,
+      символа борьбы народов Африки за независимость.
+      Российский университет дружбы народов (РУДН) совместно с Посольством ДР Конго в Российской Федерации планирует провести ряд мероприятий в Москве и Киншасе, направленных на повышение осведомленности о странах Африки и роли Лумумбы в национально-освободительном движении.
     </p>
     <a
       href="#stages"
@@ -105,7 +132,7 @@ const App = () => {
 {/* Timeline / Stages */}
 <section id="stages" className="py-5 bg-body-tertiary position-relative">
   <div className="container-fluid py-4">
-    <h3 className="text-center fw-bold mb-5">Historical Stages</h3>
+    <h3 className="text-center fw-bold mb-5">Запланированные мероприятия</h3>
 
     {/* Центральная линия */}
     <div className="position-relative"> 
