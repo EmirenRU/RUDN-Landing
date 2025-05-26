@@ -1,276 +1,441 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, type SetStateAction } from "react";
 import './index.css'
+import { FaBars, FaHome, FaInfo, FaPhone, FaServicestack } from "react-icons/fa";
+
+
+interface VisibleSections {
+  hero: boolean;
+  quote: boolean;
+  events: boolean;
+  timetable: boolean;
+}
+
+interface Event {
+  title: string;
+  date: string;
+  description: string;
+  price: string;
+}
+
+interface TimetableItem {
+  time: string;
+  event: string;
+  location: string;
+}
+
+interface Timetable {
+  days: string[];
+  data: Record<string, TimetableItem[]>;
+}
+
+interface Content {
+  hero: {
+    title: string;
+    subtitle: string;
+    cta: string;
+  };
+  quote: {
+    text: string;
+    author: string;
+  };
+  events: Event[];
+  timetable: Timetable;
+}
+
 const App = () => {
-  const [activeStage, setActiveStage] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
+    // Динамическое содержимое
+        const content: Content = {
+        hero: {
+            title: "Welcome to EventFlow",
+            subtitle: "Discover amazing events and experiences around the world",
+            cta: "Explore Events"
+        },
+        quote: {
+            text: "The best way to predict the future is to create it through the events we choose to attend and the connections we make.",
+            author: "- EventFlow Team"
+        },
+        events: [
+            {
+                title: "Global Tech Summit 2024",
+                date: "October 15-17, 2024 | San Francisco",
+                description: "Join leading technologists for three days of innovation and networking.",
+                price: "$399"
+            },
+            {
+                title: "Design & Innovation Conference",
+                date: "November 5-7, 2024 | Berlin",
+                description: "Connect with creative leaders and explore design thinking in action.",
+                price: "Free"
+            },
+            {
+                title: "Sustainability Forum 2024",
+                date: "December 3-5, 2024 | Copenhagen",
+                description: "Discuss actionable solutions for a sustainable future with experts.",
+                price: "$199"
+            }
+        ],
+        timetable: {
+            days: ["Monday", "Tuesday", "Wednesday"],
+            data: {
+                Monday: [
+                    { time: "9:00 AM - 10:00 AM", event: "Opening Keynote", location: "Main Auditorium" },
+                    { time: "10:30 AM - 12:00 PM", event: "Panel Discussion: Future of AI", location: "Conference Room A" }
+                ],
+                Tuesday: [
+                    { time: "9:00 AM - 10:00 AM", event: "Keynote: Sustainability", location: "Main Auditorium" },
+                    { time: "10:30 AM - 12:00 PM", event: "Tech Innovations Showcase", location: "Exhibition Hall" }
+                ],
+                Wednesday: [
+                    { time: "9:00 AM - 10:00 AM", event: "Startup Pitch Competition", location: "Main Auditorium" },
+                    { time: "10:30 AM - 12:00 PM", event: "Closing Ceremony", location: "Main Auditorium" }
+                ]
+            }
+        }
+    };
 
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    // Состояние
+const [activeDay, setActiveDay] = useState<string>(content.timetable.days[0]);
+    const [isOpen, setIsOpen] = useState(false);
 
-  const stages = [
-    {
-      title: "Международная научная конференция на тему: «Наследие Патриса Лумумбы: идеи свободы, равенства и международного сотрудничества».",
-      description:
-        "RUDN University was established in 1960 as the Peoples' Friendship University of Russia. It was created with a mission to foster international cooperation and educate future leaders from around the world.",
-      image: "https://placehold.co/600x400?text=%D0%9C%D0%B5%D0%B6%D0%B4%D1%83%D0%BD%D0%B0%D1%80%D0%BE%D0%B4%D0%BD%D0%B0%D1%8F+%D0%BD%D0%B0%D1%83%D1%87%D0%BD%D0%B0%D1%8F+%D0%BA%D0%BE%D0%BD%D1%84%D0%B5%D1%80%D0%B5%D0%BD%D1%86%D0%B8%D1%8F",
+const [visibleSections, setVisibleSections] = useState<VisibleSections>({
+  hero: true,
+  quote: false,
+  events: false,
+  timetable: false
+});
+    const [isTransitioning, setIsTransitioning] = useState(false);
 
-    },
-    {
-      title: "Открытые лекции о деколонизации Африки и роли П. Лумумбы.",
-      description:
-        "Throughout the decades, RUDN expanded its academic programs, research capabilities, and global partnerships. The university became a hub for cultural exchange and scientific innovation.",
-      image: "https://placehold.co/600x400?text=%D0%9E%D1%82%D0%BA%D1%80%D1%8B%D1%82%D1%8B%D0%B5+%D0%BB%D0%B5%D0%BA%D1%86%D0%B8%D0%B8+%D0%BE+%D0%B4%D0%B5%D0%BA%D0%BE%D0%BB%D0%BE%D0%BD%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8+%D0%90%D1%84%D1%80%D0%B8%D0%BA%D0%B8+%D0%B8+%D1%80%D0%BE%D0%BB%D0%B8+%D0%9F.+%D0%9B%D1%83%D0%BC%D1%83%D0%BC%D0%B1%D1%8B",
-    },
-    {
-      title: "Выставка фотографий из архивов, посвященных Лумумбе и деколонизации Африки.",
-      description:
-        "In the 21st century, RUDN embraced modern education technologies, updated infrastructure, and strengthened its position among top global universities. New faculties and research centers were launched.",
-      image: "https://placehold.co/600x400?text=%D0%92%D1%8B%D1%81%D1%82%D0%B0%D0%B2%D0%BA%D0%B0+%D1%84%D0%BE%D1%82%D0%BE%D0%B3%D1%80%D0%B0%D1%84%D0%B8%D0%B9+%D0%B8%D0%B7+%D0%B0%D1%80%D1%85%D0%B8%D0%B2%D0%BE%D0%B2,+%D0%BF%D0%BE%D1%81%D0%B2%D1%8F%D1%89%D0%B5%D0%BD%D0%BD%D1%8B%D1%85+%D0%9B%D1%83%D0%BC%D1%83%D0%BC%D0%B1%D0%B5",
-    },
-    {
-      title: "Показ фильма RT, снятого к юбилею Лумумбы.",
-      description:
-          "Today, RUDN University stands as a leading educational and research institution with a diverse student body from over 150 countries and strong ties to industries and governments worldwide.",
-      image: "https://placehold.co/600x400?text=%D0%9F%D0%BE%D0%BA%D0%B0%D0%B7+%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%D0%B0+RT,+%D1%81%D0%BD%D1%8F%D1%82%D0%BE%D0%B3%D0%BE+%D0%BA+%D1%8E%D0%B1%D0%B8%D0%BB%D0%B5%D1%8E+%D0%9B%D1%83%D0%BC%D1%83%D0%BC%D0%B1%D1%8B.",
-    },
-    {
-      title: "Презентация книги о П. Лумумбе, автор Л.В. Пономаренко.",
-      description:
-          "Today, RUDN University stands as a leading educational and research institution with a diverse student body from over 150 countries and strong ties to industries and governments worldwide.",
-      image: "https://placehold.co/600x400?text=%D0%9F%D1%80%D0%B5%D0%B7%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F+%D0%BA%D0%BD%D0%B8%D0%B3%D0%B8+%D0%BE+%D0%9F.+%D0%9B%D1%83%D0%BC%D1%83%D0%BC%D0%B1%D0%B5,+%D0%B0%D0%B2%D1%82%D0%BE%D1%80+%D0%9B.%D0%92.+%D0%9F%D0%BE%D0%BD%D0%BE%D0%BC%D0%B0%D1%80%D0%B5%D0%BD%D0%BA%D0%BE.",
-    },
-    {
-      title: "Вечерний кинофестиваль для студентов РУДН с показом фильмов о борьбе за независимость.",
-      description:
-          "Today, RUDN University stands as a leading educational and research institution with a diverse student body from over 150 countries and strong ties to industries and governments worldwide.",
-      image: "https://placehold.co/600x400?text=%D0%92%D0%B5%D1%87%D0%B5%D1%80%D0%BD%D0%B8%D0%B9+%D0%BA%D0%B8%D0%BD%D0%BE%D1%84%D0%B5%D1%81%D1%82%D0%B8%D0%B2%D0%B0%D0%BB%D1%8C+%D0%B4%D0%BB%D1%8F+%D1%81%D1%82%D1%83%D0%B4%D0%B5%D0%BD%D1%82%D0%BE%D0%B2+%D0%A0%D0%A3%D0%94%D0%9D+%D1%81+%D0%BF%D0%BE%D0%BA%D0%B0%D0%B7%D0%BE%D0%BC+%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%D0%BE%D0%B2+%D0%BE+%D0%B1%D0%BE%D1%80%D1%8C%D0%B1%D0%B5+%D0%B7%D0%B0+%D0%BD%D0%B5%D0%B7%D0%B0%D0%B2%D0%B8%D1%81%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D1%8C.",
-    },
-    {
-      title: "Специальный номер газеты «Дружба», посвященный столетию Лумумбы.",
-      description:
-        "Today, RUDN University stands as a leading educational and research institution with a diverse student body from over 150 countries and strong ties to industries and governments worldwide.",
-      image: "https://placehold.co/600x400?text=%D0%A1%D0%BF%D0%B5%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9+%D0%BD%D0%BE%D0%BC%D0%B5%D1%80+%D0%B3%D0%B0%D0%B7%D0%B5%D1%82%D1%8B+%C2%AB%D0%94%D1%80%D1%83%D0%B6%D0%B1%D0%B0%C2%BB,+%D0%BF%D0%BE%D1%81%D0%B2%D1%8F%D1%89%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9+%D1%81%D1%82%D0%BE%D0%BB%D0%B5%D1%82%D0%B8%D1%8E+%D0%9B%D1%83%D0%BC%D1%83%D0%BC%D0%B1%D1%8B.",
-    },
+    // Refs
+const sectionRefs = {
+  hero: useRef<HTMLElement>(null),
+  quote: useRef<HTMLElement>(null),
+  events: useRef<HTMLElement>(null),
+  timetable: useRef<HTMLElement>(null)
+};
+    // Оптимизированная анимация появления секций при скролле
+    useEffect(() => {
+        let ticking = false;
+        const lastScrollTop = 0;
 
-    {
-      title: "Памятная церемония с возложением цветов к памятнику П. Лумумбе.",
-      description:
-          "Today, RUDN University stands as a leading educational and research institution with a diverse student body from over 150 countries and strong ties to industries and governments worldwide.",
-      image: "https://placehold.co/600x400?text=%D0%9F%D0%B0%D0%BC%D1%8F%D1%82%D0%BD%D0%B0%D1%8F+%D1%86%D0%B5%D1%80%D0%B5%D0%BC%D0%BE%D0%BD%D0%B8%D1%8F+%D1%81+%D0%B2%D0%BE%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5%D0%BC+%D1%86%D0%B2%D0%B5%D1%82%D0%BE%D0%B2+%D0%BA+%D0%BF%D0%B0%D0%BC%D1%8F%D1%82%D0%BD%D0%B8%D0%BA%D1%83+%D0%9F.+%D0%9B%D1%83%D0%BC%D1%83%D0%BC%D0%B1%D0%B5.",
-    },
-  ];
+        const handleScroll = () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    const sections = {
+                        hero: sectionRefs.hero.current,
+                        quote: sectionRefs.quote.current,
+                        events: sectionRefs.events.current,
+                        timetable: sectionRefs.timetable.current
+                    };
 
-  return (
-    <div className="bg-white text-body container-fluid w-100 ps-0 pe-0">
-      {/* Header */}
-      <header className="bg-primary text-white p-4 shadow">
-        <div className="container-fluid d-flex justify-content-between align-items-center">
-          <h1 className="h3 mb-0 fw-bold">RUDN University</h1>
-          <nav className="d-none d-md-flex gap-4">
-            <a href="#" className="text-white text-decoration-none hover-opacity">
-              Home
-            </a>
-            <a href="#stages" className="text-white text-decoration-none hover-opacity">
-              Stages
-            </a>
-            <a href="#" className="text-white text-decoration-none hover-opacity">
-              About
-            </a>
-            <a href="#" className="text-white text-decoration-none hover-opacity">
-              Contact
-            </a>
-          </nav>
-        </div>
-      </header>
+                    const newVisibility = {  hero: true,
+                                        quote: false,
+                                        events: true,
+                                        timetable: false };
 
-      {/* Hero Section */}
-<section 
-  className="position-relative py-5 px-3 d-flex align-items-center" 
-  style={{
-    minHeight: "700px", 
-    backgroundImage: "url(https://obruchev.mos.ru/876897689.jpg)",
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
-    backgroundPosition: "0 20%"
-  }}
->
-  {/* Полупрозрачный слой */}
-  <div 
-    className="position-absolute top-0 start-0 w-100 h-100"
-    style={{
-      backgroundColor: "rgba(173, 216, 230, 0.5)" // lightblue с 50% прозрачностью
-    }}
-  ></div>
+                Object.entries(sections).forEach(([key, element]) => {
+                if (!element) return;
+                const rect = element.getBoundingClientRect();
+                newVisibility[key as keyof typeof newVisibility] = (rect.top <= window.innerHeight * 0.8 && rect.bottom >= 0);
+                });
+                    setVisibleSections(newVisibility);
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
 
-  <div className="container-fluid position-relative z-1 text-white d-flex flex-grow-1 flex-column align-items-center justify-content-center" style={{minHeight:"100%"}}>
-    <h2 className="display-5 fw-bold mb-4" style={{textShadow: "1px 1px 1px rgba(2,  62,  74, 1)"}}>
-      Празднование 100-летия Патриса Лумумбы
-    </h2>
-    <p className="lead mb-4" style={{textShadow: "1px 1px 1px rgba(2,  62,  74, 1)"}}>
-      В июле 2025 года исполняется 100 лет со дня рождения Патриса Лумумбы,
-      первого премьер-министра Демократической Республики Конго и национального героя,
-      символа борьбы народов Африки за независимость.
-      Российский университет дружбы народов (РУДН) совместно с Посольством ДР Конго в Российской Федерации планирует провести ряд мероприятий в Москве и Киншасе, направленных на повышение осведомленности о странах Африки и роли Лумумбы в национально-освободительном движении.
-    </p>
-    <a
-      href="#stages"
-      className="btn btn-primary btn-lg px-4 py-2 shadow hover-scale"
-      style={{maxWidth:"20%"}}
-    >
-      Discover the Stages
-    </a>
-  </div>
-</section>
+        handleScroll();
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
-      {/* Timeline / Stages */}
-{/* Timeline / Stages */}
-{/* Timeline / Stages */}
-{/* Timeline / Stages */}
-<section id="stages" className="py-5 bg-body-tertiary position-relative">
-  <div className="container-fluid py-4">
-    <h3 className="text-center fw-bold mb-5">Запланированные мероприятия</h3>
+    // Обработчик выбора дня с анимацией
+    const handleDayClick = (day: SetStateAction<string>) => {
+        if (day === activeDay) return;
 
-    {/* Центральная линия */}
-    <div className="position-relative"> 
-      <div className="row">
-      {stages.map((stage, index) => (
-        <div key={index} className="col-12 position-relative px-5 ">
-          {/* Точка на линии */}
-          <div 
-            className="position-absolute start-50 translate-middle-x rounded-circle bg-primary border border-4 border-white"
-            style={{
-              width: "20px",
-              height: "20px",
-              top: "50px",
-              zIndex: 2
-            }}
-          ></div>
+        setIsTransitioning(true);
 
-          {/* Карточка с чередованием */}
-          <div className={`d-flex flex-column ${index % 2 === 0 ? 'flex-md-row-reverse' : 'flex-md-row'}`}>
-            {/* Изображение (50% ширины) */}
-<div
-    className=""
-    style={{
-        width: "70%",
-        paddingLeft: index % 2 === 0 ? "2.5%" : undefined,
-        paddingRight: index % 2 === 0 ? undefined : "2.5%",
-        paddingTop: "5%",
-        paddingBottom: "7%"
-    }}
->
-              <img
-                src={stage.image}
-                alt={stage.title}
-                className="img-fluid h-auto"
-                style={{minHeight: "250px", maxHeight: "600px", verticalAlign: "middle"   }}
-              />
+        // Анимация с оптимизацией для производительности
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                setActiveDay(day);
+                setIsTransitioning(false);
+            }, 200);
+        });
+    };
+
+    return (
+        <div className="min-h-screen bg-white text-blue-950 font-sans">
+            {/* Hero Section */}
+ <header className="bg-blue-600 shadow-lg">
+            <div className="container mx-auto px-1 py-4
+       flex justify-between items-center">
+                <div className="text-xl font-bold text-white">
+                    <img src='https://handbook.rudn.ru/img/logo.svg' alt="РУДН" style={{width: "40%"}} />
+                </div>
+                <nav className="hidden md:flex space-x-4 ml-5 mr-5">
+                    <a href="#" className="flex items-center
+           text-white font-bold">
+                        <FaHome className="mr-1" /> Home
+                    </a>
+                    <a href="#" className="flex items-center
+           text-white font-bold">
+                        <FaInfo className="mr-1" /> About
+                    </a>
+                    <a href="#" className="flex items-center
+           text-white font-bold">
+                        <FaServicestack className="mr-1" /> Services
+                    </a>
+                    <a href="#" className="flex items-center
+           text-white font-bold">
+                        <FaPhone className="mr-1" /> Contact
+                    </a>
+                </nav>
+                <div className="md:hidden">
+                    <button onClick={() => setIsOpen(!isOpen)} className="text-white">
+                        <FaBars size={24} /> {/* Hamburger icon for mobile */}
+                    </button>
+                </div>
             </div>
-            
-            {/* Текстовый блок (50% ширины) */}
-            <div
-                className={`col-md-6 p-4  d-flex flex-wrap flex-column position-relative ${index % 2 === 0 ? 'pe-md-5' : 'ps-md-5'}`}
-                style={{
-                  // bottom: "50%",
-                  borderLeft: index % 2 !== 0 ? "3px solid #0d6efd " : "none",
-                  borderRight: index % 2 === 0 ? "3px solid #0d6efd " : "none",
-                  marginLeft: (window.innerWidth >= 768) ? (index % 2 === 0 ? "0px" : "0") : "0", // right + left == size of borderline
-                  marginRight: (window.innerWidth >= 768) ? (index % 2 !== 0 ? "3px" : "0") : "0" // 3 + 0 === 3
-                }}
+
+            {/* Mobile Menu */}
+            {isOpen && (
+                <nav className="md:hidden bg-green-600 p-4
+         space-y-2 ml-2 mr-2">
+                    <a href="#" className="flex items-center 
+          text-white font-bold">
+                        <FaHome className="mr-2" /> Home
+                    </a>
+                    <a href="#" className="flex items-center
+           text-white font-bold">
+                        <FaInfo className="mr-2" /> About
+                    </a>
+                    <a href="#" className="flex items-center 
+          text-white font-bold">
+                        <FaServicestack className="mr-2" /> Services
+                    </a>
+                    <a href="#" className="flex items-center
+           text-white font-bold">
+                        <FaPhone className="mr-2" /> Contact
+                    </a>
+                </nav>
+            )}
+        </header>
+<section
+    ref={sectionRefs.hero}
+    className="h-screen flex items-center justify-center relative overflow-hidden bg-blue-300/30"
+    style={{
+        backgroundImage: "url(https://github.com/EmirenRU/RUDN-Landing/blob/4ea65f765b5476d3679e6e7b52ae1517e14027d5/rudn-landing/src/assets/RUDN_Background.gif?raw=true)",
+        backgroundSize: "cover",
+        backgroundBlendMode: "overlay"
+    }}
+>
+                {/* Геометрические формы с доминирующим синим цветом */}
+
+                <div className={`container mx-auto px-4 z-10 text-center transition-all duration-1000 ${visibleSections.hero ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                    <h1 className="text-4xl md:text-6xl font-bold mb-4 text-sky-100 text-shadow-lg/30 ">
+                        {content.hero.title}
+                    </h1>
+                    <p className="text-lg md:text-xl max-w-2xl mx-auto mb-8 text-blue-100 text-shadow-lg/30">
+                        {content.hero.subtitle}
+                    </p>
+                    <button style={{borderRadius: "10px"}} className="px-6  py-3 bg-blue-600 border-2 border-blue-600 text-blue-100 text-shadow-lg/30 hover:bg-blue-700 hover:text-white transition-colors duration-300 transform ">
+                        {content.hero.cta}
+                    </button>
+                </div>
+            </section>
+
+            {/* Quote Section */}
+            <section
+                ref={sectionRefs.quote}
+                className="py-20 bg-blue-50 relative"
             >
-              <span className="d-block text-primary text-uppercase fw-semibold mb-2">
-                Stage {index + 1}
-              </span>
-              <h4 className="fw-bold mb-3">{stage.title}</h4>
-              <p className="text-secondary">{stage.description}</p>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-    </div>
-  </div>
-</section>
+                {/* Геометрическая форма с доминирующим синим цветом */}
+                <div className="absolute top-0 left-0 w-64 h-64 bg-blue-100 transform rotate-12 opacity-30"></div>
 
-      {/* Interactive Timeline (for mobile) */}
-      {isMobile && (
-        <section className="py-4 bg-white">
-          <h3 className="text-center fw-bold mb-4">Interactive Timeline</h3>
-          <div className="d-flex justify-content-center gap-2 mb-4">
-            {stages.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setActiveStage(idx)}
-                className={`btn p-0 rounded-pill ${activeStage === idx ? "btn-primary active" : "btn-secondary"}`}
-                style={{ width: activeStage === idx ? "2rem" : "0.75rem", height: "0.75rem" }}
-                aria-label={`Go to stage ${idx + 1}`}
-              ></button>
-            ))}
-          </div>
-          <div className="bg-body-secondary p-4 rounded shadow">
-            <h4 className="fw-bold mb-2">{stages[activeStage].title}</h4>
-            <p>{stages[activeStage].description}</p>
-          </div>
-        </section>
-      )}
+                <div className={`max-w-3xl mx-auto px-4 relative z-10 text-center transition-all duration-700 ${visibleSections.quote ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                    <div className="text-xl md:text-2xl italic font-light leading-relaxed text-blue-900">
+                        "{content.quote.text}"
+                    </div>
+                    <div className="mt-8 font-medium text-blue-800">{content.quote.author}</div>
+                </div>
+            </section>
 
-      {/* Footer */}
-      <footer className="bg-dark text-white py-5">
-        <div className="container-fluid">
-          <div className="row g-4">
-            <div className="col-md-4">
-              <h5 className="fw-bold mb-3">RUDN University</h5>
-              <p className="text-body-secondary">
-                A leading educational and research institution fostering global
-                collaboration and excellence.
-              </p>
-            </div>
-            <div className="col-md-4">
-              <h5 className="fw-bold mb-3">Quick Links</h5>
-              <ul className="list-unstyled text-body-secondary">
-                <li className="mb-2">
-                  <a href="#" className="text-decoration-none hover-text-white">
-                    Admissions
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-decoration-none hover-text-white">
-                    Programs
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-decoration-none hover-text-white">
-                    Research
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-decoration-none hover-text-white">
-                    Campus Life
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="col-md-4">
-              <h5 className="fw-bold mb-3">Contact Us</h5>
-              <address className="text-body-secondary">
-                <p>Miklukho-Maklaya Street, 6, Moscow, Russia</p>
-                <p>Email: info@rudn.ru</p>
-                <p>Phone: +7 (495) 989-10-10</p>
-              </address>
-            </div>
-          </div>
-          <hr className="my-4 border-secondary" />
-          <div className="text-center text-body-secondary">
-            &copy; {new Date().getFullYear()} RUDN University. All rights reserved.
-          </div>
+            {/* Events Section */}
+            <section
+                ref={sectionRefs.events}
+                className="py-20 bg-white relative"
+            >
+                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full opacity-40"></div>
+
+                <div className="max-w-7xl mx-auto px-4 relative z-10">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-blue-900">
+                            Upcoming Events
+                        </h2>
+                        <p className="mt-4 max-w-2xl mx-auto text-blue-700">
+                            Explore our carefully curated list of upcoming events across the globe
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {content.events.map((event, index) => (
+                            <div
+                                key={index}
+                                className={`transition-all duration-700 ${visibleSections.events ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+                                style={{ transitionDelay: `${index * 150}ms` }}
+                            >
+                                <div className="bg-white border border-blue-100 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
+                                    <h3 className="text-xl font-semibold mb-2 text-blue-900">{event.title}</h3>
+                                    <p className="text-sm text-blue-700 mb-4">{event.date}</p>
+                                    <p className="text-sm text-blue-700 mb-6">
+                                        {event.description}
+                                    </p>
+                                    <div className="flex justify-between items-center">
+                                        <button className="text-sm font-medium hover:text-blue-800 transition-colors">
+                                            Learn More
+                                        </button>
+                                        <span className="text-sm font-semibold text-blue-900">{event.price}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="mt-12 text-center">
+                        <button className="px-6 py-3 border-2 border-blue-700 hover:bg-blue-700 hover:text-white transition-colors duration-300 transform hover:scale-105">
+                            View All Events
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            {/* Timetable Section */}
+            <section
+                ref={sectionRefs.timetable}
+                className="py-20 bg-blue-50 relative"
+            >
+                <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-blue-100 rounded-full opacity-20"></div>
+
+                <div className="max-w-7xl mx-auto px-4 relative z-10">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-blue-900">
+                            Event Schedule
+                        </h2>
+                        <p className="mt-4 max-w-2xl mx-auto text-blue-700">
+                            Explore our detailed schedule of events and activities
+                        </p>
+                    </div>
+
+                    {/* Day Tabs с доминирующим синим цветом */}
+                    <div className="flex flex-wrap justify-center gap-4 mb-12">
+                        {content.timetable.days.map((day) => (
+                            <button
+                                key={day}
+                                onClick={() => handleDayClick(day)}
+                                className={`px-6 py-2 font-medium transition-colors duration-300 ${
+                                    activeDay === day
+                                        ? 'text-blue-900 border-b-2 border-blue-700'
+                                        : 'text-blue-700 hover:text-blue-900'
+                                }`}
+                            >
+                                {day}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Таблица с анимацией */}
+                    <div className={`transition-all duration-500 ${visibleSections.timetable ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                        <div className="overflow-x-auto">
+                            <div
+                                className={`transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
+                            >
+                                <table className="min-w-full bg-white rounded-lg shadow-sm">
+                                    <thead className="bg-blue-50">
+                                    <tr>
+                                        <th className="px-6 py-3 text-left text-sm font-medium text-blue-800 uppercase tracking-wider">Time</th>
+                                        <th className="px-6 py-3 text-left text-sm font-medium text-blue-800 uppercase tracking-wider">Event</th>
+                                        <th className="px-6 py-3 text-left text-sm font-medium text-blue-800 uppercase tracking-wider">Location</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-blue-50">
+                                    {content.timetable.data[activeDay].map((item, index: number) => (
+                                        <tr
+                                            key={index}
+                                            className={`transition-all duration-500 ${isTransitioning ? 'opacity-0 translate-y-6' : 'opacity-100 translate-y-0'}`}
+                                            style={{ transitionDelay: `${index * 100}ms` }}
+                                        >
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-700">{item.time}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-900">{item.event}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-700">{item.location}</td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="mt-12 text-center">
+                        <button className="px-6 py-3 border-2 border-blue-700 hover:bg-blue-700 hover:text-white transition-colors duration-300 transform hover:scale-105">
+                            Download Full Schedule
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            {/* Footer */}
+            <footer className="bg-white text-blue-700 py-12 border-t border-blue-100">
+                <div className="max-w-7xl mx-auto px-4">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                        <div>
+                            <h3 className="text-lg font-semibold mb-4 text-blue-900">EventFlow</h3>
+                            <p className="text-sm text-blue-700">
+                                Connecting people through inspiring events and experiences.
+                            </p>
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-semibold mb-4 text-blue-900">Quick Links</h3>
+                            <ul className="space-y-2">
+                                <li><a href="#" className="hover:text-blue-900">Home</a></li>
+                                <li><a href="#" className="hover:text-blue-900">About</a></li>
+                                <li><a href="#" className="hover:text-blue-900">Events</a></li>
+                                <li><a href="#" className="hover:text-blue-900">Schedule</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-semibold mb-4 text-blue-900">Contact</h3>
+                            <ul className="space-y-2">
+                                <li>123 Event Street</li>
+                                <li>San Francisco, CA 94107</li>
+                                <li>hello@eventflow.com</li>
+                                <li>+1 (555) 123-4567</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-semibold mb-4 text-blue-900">Newsletter</h3>
+                            <p className="text-sm mb-4 text-blue-700">
+                                Subscribe for event updates.
+                            </p>
+                            <div className="flex">
+                                <input
+                                    type="email"
+                                    placeholder="Your email"
+                                    className="px-4 py-2 border border-blue-200 focus:outline-none"
+                                />
+                                <button className="px-4 py-2 bg-blue-700 text-white">
+                                    Subscribe
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="border-t border-blue-100 mt-12 pt-8 text-center text-sm">
+                        <p>© 2024 EventFlow. All rights reserved.</p>
+                    </div>
+                </div>
+            </footer>
         </div>
-      </footer>
-    </div>
-  );
+    );
 };
 
 export default App;
