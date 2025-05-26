@@ -171,7 +171,7 @@ const sectionRefs = {
             <div className="container mx-auto px-1 py-4
        flex justify-between items-center">
                 <div className="text-xl font-bold text-white">
-                    <img src='https://handbook.rudn.ru/img/logo.svg' alt="РУДН" style={{width: "40%"}} />
+                    <img src='https://handbook.rudn.ru/img/logo.svg' alt="РУДН" style={{width: "30%", height: "30%"}} />
                 </div>
                 <nav className="hidden md:flex space-x-4 ml-5 mr-5">
                     <a href="#" className="flex items-center
@@ -223,7 +223,7 @@ const sectionRefs = {
         </header>
 <section
     ref={sectionRefs.hero}
-    className="h-screen flex items-center justify-center relative overflow-hidden bg-blue-300/30"
+    className="h-screen flex items-center justify-center relative overflow-hidden bg-blue-300/20"
     style={{
         backgroundImage: "url(https://github.com/EmirenRU/RUDN-Landing/blob/4ea65f765b5476d3679e6e7b52ae1517e14027d5/rudn-landing/src/assets/RUDN_Background.gif?raw=true)",
         backgroundSize: "cover",
@@ -233,10 +233,10 @@ const sectionRefs = {
                 {/* Геометрические формы с доминирующим синим цветом */}
 
                 <div className={`container mx-auto px-4 z-10 text-center transition-all duration-1000 ${visibleSections.hero ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-                    <h1 className="text-4xl md:text-6xl font-bold mb-4 text-sky-100 text-shadow-lg/30 ">
+                    <h1 className="text-4xl md:text-6xl font-bold mb-4 text-sky-100 text-shadow-lg/40 ">
                         {content.hero.title}
                     </h1>
-                    <p className="text-lg md:text-xl max-w-2xl mx-auto mb-8 text-blue-100 text-shadow-lg/30">
+                    <p className="text-lg md:text-xl max-w-2xl mx-auto mb-8 text-blue-100 text-shadow-lg/50">
                         {content.hero.subtitle}
                     </p>
                     <button style={{borderRadius: "10px"}} className="px-6  py-3 bg-blue-600 border-2 border-blue-600 text-blue-100 text-shadow-lg/30 hover:bg-blue-700 hover:text-white transition-colors duration-300 transform ">
