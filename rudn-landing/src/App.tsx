@@ -47,32 +47,50 @@ const App = () => {
     // Динамическое содержимое
         const content: Content = {
         hero: {
-            title: "Welcome to EventFlow",
+            title: "Welcome to RUDN University",
             subtitle: "Discover amazing events and experiences around the world",
             cta: "Explore Events"
         },
         quote: {
-            text: "The best way to predict the future is to create it through the events we choose to attend and the connections we make.",
-            author: "- EventFlow Team"
+            text: "Discover the World in one University",
+            author: "RUDN University "
         },
         events: [
             {
-                title: "Global Tech Summit 2024",
-                date: "October 15-17, 2024 | San Francisco",
-                description: "Join leading technologists for three days of innovation and networking.",
-                price: "$399"
+                title: "International Education Expo 2025",
+                date: "March 10-12, 2025",
+                description: "Showcase of global educational programs.",
+                price: "Free entry for students and faculty."
             },
             {
-                title: "Design & Innovation Conference",
-                date: "November 5-7, 2024 | Berlin",
-                description: "Connect with creative leaders and explore design thinking in action.",
-                price: "Free"
+                title: "RUDN Science and Technology Fair",
+                date: "April 20-22, 2025",
+                description: "Exhibition of student and faculty research.",
+                price: "Free for all attendees."
             },
             {
-                title: "Sustainability Forum 2024",
-                date: "December 3-5, 2024 | Copenhagen",
-                description: "Discuss actionable solutions for a sustainable future with experts.",
-                price: "$199"
+                title: "Cultural Diversity Festival",
+                date: "May 15-17, 2025",
+                description: "Celebrate diverse cultures with food and performances.",
+                price: "Free entry."
+            },
+            {
+                title: "Sustainable Development Symposium",
+                date: "June 5-7, 2025",
+                description: "Discussions on sustainability practices.",
+                price: "500 RUB for general admission."
+            },
+            {
+                title: "RUDN Sports Championship",
+                date: "September 1-3, 2025",
+                description: "Sports competition for students and faculty.",
+                price: "Free for participants."
+            },
+            {
+                title: "Tech Innovation Workshop",
+                date: "October 10-12, 2025",
+                description: "Hands-on workshops on the latest tech trends.",
+                price: "300 RUB for participants."
             }
         ],
         timetable: {
@@ -391,7 +409,7 @@ const sectionRefs = {
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                         <div>
-                            <h3 className="text-lg font-semibold mb-4 text-blue-900">EventFlow</h3>
+                            <h3 className="text-lg font-semibold mb-4 text-blue-900">RUDN University</h3>
                             <p className="text-sm text-blue-700">
                                 Connecting people through inspiring events and experiences.
                             </p>
@@ -408,10 +426,10 @@ const sectionRefs = {
                         <div>
                             <h3 className="text-lg font-semibold mb-4 text-blue-900">Contact</h3>
                             <ul className="space-y-2">
-                                <li>123 Event Street</li>
-                                <li>San Francisco, CA 94107</li>
-                                <li>hello@eventflow.com</li>
-                                <li>+1 (555) 123-4567</li>
+                                <li>street</li>
+                                <li>Moscow, Russia</li>
+                                <li>email address</li>
+                                <li>phone number</li>
                             </ul>
                         </div>
                         <div>
@@ -432,7 +450,7 @@ const sectionRefs = {
                         </div>
                     </div>
                     <div className="border-t border-blue-100 mt-12 pt-8 text-center text-sm">
-                        <p>© 2024 EventFlow. All rights reserved.</p>
+                        <p>© 2025 RUDN. All rights reserved.</p>
                     </div>
                 </div>
             </footer>
