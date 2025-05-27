@@ -426,10 +426,10 @@ const sectionRefs = {
                         <div>
                             <h3 className="text-lg font-semibold mb-4 text-blue-900">Contact</h3>
                             <ul className="space-y-2">
-                                <li>street</li>
+                                <li>6 Miklukho-Maklaya Street, Moscow, 117198, Russia.</li>
                                 <li>Moscow, Russia</li>
-                                <li>email address</li>
-                                <li>phone number</li>
+                                <li>information@rudn.ru</li>
+                                <li>+7 (499) 936-87-87</li>
                             </ul>
                         </div>
                         <div>
