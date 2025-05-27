@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, type SetStateAction } from "react";
 import './index.css'
 import { FaBars, FaHome, FaInfo, FaPhone, FaServicestack } from "react-icons/fa";
 import logoPath from './assets/handbook.svg'
+import backgroundGif from './assets/RUDN_Background.gif'
 
 interface VisibleSections {
   hero: boolean;
@@ -226,7 +227,7 @@ const sectionRefs = {
     ref={sectionRefs.hero}
     className="h-screen flex items-center justify-center relative overflow-hidden bg-blue-300/20"
     style={{
-        backgroundImage: "url(https://github.com/EmirenRU/RUDN-Landing/blob/4ea65f765b5476d3679e6e7b52ae1517e14027d5/rudn-landing/src/assets/RUDN_Background.gif?raw=true)",
+        backgroundImage: `url(${backgroundGif})`,
         backgroundSize: "cover",
         backgroundBlendMode: "overlay"
     }}
