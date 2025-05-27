@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, type SetStateAction } from "react";
 import './index.css'
 import { FaBars, FaHome, FaInfo, FaPhone, FaServicestack } from "react-icons/fa";
-
+import logoPath from './assets/handbook.svg'
 
 interface VisibleSections {
   hero: boolean;
@@ -115,7 +115,6 @@ const sectionRefs = {
     // Оптимизированная анимация появления секций при скролле
     useEffect(() => {
         let ticking = false;
-        const lastScrollTop = 0;
 
         const handleScroll = () => {
             if (!ticking) {
@@ -164,6 +163,7 @@ const sectionRefs = {
         });
     };
 
+
     return (
         <div className="min-h-screen bg-white text-blue-950 font-sans">
             {/* Hero Section */}
@@ -171,7 +171,8 @@ const sectionRefs = {
             <div className="container mx-auto px-1 py-4
        flex justify-between items-center">
                 <div className="text-xl font-bold text-white">
-                    <img src='https://handbook.rudn.ru/img/logo.svg' alt="РУДН" style={{width: "30%", height: "30%"}} />
+
+                    <img src={logoPath} alt="РУДН" style={{width: "311.2521667px", fill: "#FFFFF", height: "40px"}} />
                 </div>
                 <nav className="hidden md:flex space-x-4 ml-5 mr-5">
                     <a href="#" className="flex items-center
@@ -202,7 +203,7 @@ const sectionRefs = {
             {isOpen && (
                 <nav className="md:hidden bg-green-600 p-4
          space-y-2 ml-2 mr-2">
-                    <a href="#" className="flex items-center 
+                    <a href="#" className="flex items-center
           text-white font-bold">
                         <FaHome className="mr-2" /> Home
                     </a>
@@ -210,7 +211,7 @@ const sectionRefs = {
            text-white font-bold">
                         <FaInfo className="mr-2" /> About
                     </a>
-                    <a href="#" className="flex items-center 
+                    <a href="#" className="flex items-center
           text-white font-bold">
                         <FaServicestack className="mr-2" /> Services
                     </a>
