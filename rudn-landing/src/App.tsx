@@ -298,20 +298,20 @@ const sectionRefs = {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 ">
                         {content.events.map((event, index) => (
                             <div
                                 key={index}
-                                className={`transition-all duration-700 ${visibleSections.events ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+                                className={`transition-all duration-700 ${visibleSections.events ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'} h-full`}
                                 style={{ transitionDelay: `${index * 150}ms` }}
                             >
-                                <div className="bg-white border border-blue-100 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
+                                <div className="bg-white border border-blue-100 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col">
                                     <h3 className="text-xl font-semibold mb-2 text-blue-900">{event.title}</h3>
                                     <p className="text-sm text-blue-700 mb-4">{event.date}</p>
-                                    <p className="text-sm text-blue-700 mb-6">
+                                    <p className="text-sm text-blue-700 flex-grow mb-6">
                                         {event.description}
                                     </p>
-                                    <div className="flex justify-between items-center">
+                                    <div className="mt-auto flex justify-between items-center">
                                         <button className="text-sm font-medium hover:text-blue-800 transition-colors">
                                             Learn More
                                         </button>
@@ -322,11 +322,11 @@ const sectionRefs = {
                         ))}
                     </div>
 
-                    <div className="mt-12 text-center">
-                        <button className="px-6 py-3 border-2 border-blue-700 hover:bg-blue-700 hover:text-white transition-colors duration-300 transform hover:scale-105">
-                            View All Events
-                        </button>
-                    </div>
+                    {/*<div className="mt-12 text-center">*/}
+                    {/*    <button className="px-6 py-3 border-2 border-blue-700 hover:bg-blue-700 hover:text-white transition-colors duration-300 transform hover:scale-105">*/}
+                    {/*        View All Events*/}
+                    {/*    </button>*/}
+                    {/*</div>*/}
                 </div>
             </section>
 

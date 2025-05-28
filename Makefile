@@ -18,6 +18,8 @@ add-hosts:
 	@if ! grep -q "127.0.0.1 landing.rudn.ru" /etc/hosts; then \
 		echo "127.0.0.1 landing.rudn.ru" | sudo tee -a /etc/hosts; \
 	fi
+dev:
+	cd rudn-landing && npm run dev
 
 all: key cert add-hosts compose
 .PHONY: cert key all compose compose-build compose-down add-hosts
