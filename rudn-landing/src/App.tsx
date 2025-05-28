@@ -98,15 +98,21 @@ const App = () => {
             data: {
                 Monday: [
                     { time: "9:00 AM - 10:00 AM", event: "Opening Keynote", location: "Main Auditorium" },
-                    { time: "10:30 AM - 12:00 PM", event: "Panel Discussion: Future of AI", location: "Conference Room A" }
+                    { time: "10:30 AM - 12:00 PM", event: "Panel Discussion: Future of AI", location: "Conference Room A" },
+                    { time: "1:00 PM - 2:30 PM", event: "Workshop: Global Educational Programs", location: "Workshop Room 1"},
+                    { time: "3:00 PM - 4:30 PM", event: "Networking Session", location: "Exhibition Hall" }
                 ],
                 Tuesday: [
                     { time: "9:00 AM - 10:00 AM", event: "Keynote: Sustainability", location: "Main Auditorium" },
-                    { time: "10:30 AM - 12:00 PM", event: "Tech Innovations Showcase", location: "Exhibition Hall" }
+                    { time: "10:30 AM - 12:00 PM", event: "Tech Innovations Showcase", location: "Exhibition Hall" },
+                    { time: "1:00 PM - 2:30 PM", event: "Research Presentations", location: "Conference Room B"  },
+                    { time: "3:00 PM - 4:30 PM", event: "Panel Discussion: Cultural Diversity", location: "Conference Room A"  }
                 ],
                 Wednesday: [
-                    { time: "9:00 AM - 10:00 AM", event: "Startup Pitch Competition", location: "Main Auditorium" },
-                    { time: "10:30 AM - 12:00 PM", event: "Closing Ceremony", location: "Main Auditorium" }
+                    { time: "9:00 AM - 10:00 AM", event: "Startup Pitch Competition", location: "Main Auditorium"  },
+                    { time: "10:30 AM - 12:00 PM", event: "Closing Ceremony", location: "Main Auditorium"  },
+                    { time: "1:00 PM - 2:30 PM", event: "Cultural Performances", location: "Outdoor Stage"  },
+                    { time: "3:00 PM - 4:30 PM", event: "Workshop: Sustainable Practices", location: "Workshop Room 2" }
                 ]
             }
         }
@@ -167,6 +173,30 @@ const sectionRefs = {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    const scrollToEvents = () => {
+        if (sectionRefs.events && sectionRefs.events.current != null) {
+            sectionRefs.events.current.scrollIntoView({behavior: "smooth"});
+        }
+    }
+
+    const scrollToHero = () => {
+        if (sectionRefs.hero && sectionRefs.hero.current != null) {
+            sectionRefs.hero.current.scrollIntoView({behavior: "smooth"});
+        }
+    }
+
+    const scrollToSchedule = () => {
+        if (sectionRefs.timetable != null && sectionRefs.timetable.current != null) {
+            sectionRefs.timetable.current.scrollIntoView({behavior: "smooth"});
+        }
+    }
+
+    const scrollToContacts = () => {
+        const footer = document.getElementById("footer")
+        if (!footer) return;
+        footer.scrollIntoView({behavior: "smooth"});
+    }
+
     // Обработчик выбора дня с анимацией
     const handleDayClick = (day: SetStateAction<string>) => {
         if (day === activeDay) return;
@@ -194,19 +224,19 @@ const sectionRefs = {
                     <img src={logoPath} alt="РУДН" style={{width: "311.2521667px", fill: "#FFFFF", height: "40px"}} />
                 </div>
                 <nav className="hidden md:flex space-x-4 ml-5 mr-5">
-                    <a href="#" className="flex items-center
+                    <a onClick={scrollToHero} className="flex items-center
            text-white font-bold">
                         <FaHome className="mr-1" /> Home
                     </a>
-                    <a href="#" className="flex items-center
+                    <a onClick={scrollToEvents} className="flex items-center
            text-white font-bold">
-                        <FaInfo className="mr-1" /> About
+                        <FaInfo className="mr-1" /> Events
                     </a>
-                    <a href="#" className="flex items-center
+                    <a onClick={scrollToSchedule} className="flex items-center
            text-white font-bold">
-                        <FaServicestack className="mr-1" /> Services
+                        <FaServicestack className="mr-1" /> Timetable
                     </a>
-                    <a href="#" className="flex items-center
+                    <a onClick={scrollToContacts} className="flex items-center
            text-white font-bold">
                         <FaPhone className="mr-1" /> Contact
                     </a>
@@ -259,7 +289,7 @@ const sectionRefs = {
                     <p className="text-lg md:text-xl max-w-2xl mx-auto mb-8 text-blue-100 text-shadow-lg/50">
                         {content.hero.subtitle}
                     </p>
-                    <button style={{borderRadius: "10px"}} className="px-6  py-3 bg-blue-600 border-2 border-blue-600 text-blue-100 text-shadow-lg/30 hover:bg-blue-700 hover:text-white transition-colors duration-300 transform ">
+                    <button style={{borderRadius: "10px"}} onClick={scrollToEvents} className="px-6  py-3 bg-blue-600 border-2 border-blue-600 text-blue-100 text-shadow-lg/30 hover:bg-blue-700 hover:text-white transition-colors duration-300 transform ">
                         {content.hero.cta}
                     </button>
                 </div>
@@ -288,7 +318,7 @@ const sectionRefs = {
             >
                 <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full opacity-40"></div>
 
-                <div className="max-w-7xl mx-auto px-4 relative z-10">
+                <div id="events" className="max-w-7xl mx-auto px-4 relative z-10">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl md:text-4xl font-bold mb-4 text-blue-900">
                             Upcoming Events
@@ -397,7 +427,7 @@ const sectionRefs = {
                     </div>
 
                     <div className="mt-12 text-center">
-                        <button className="px-6 py-3 border-2 border-blue-700 hover:bg-blue-700 hover:text-white transition-colors duration-300 transform hover:scale-105">
+                        <button disabled={true} className="px-6 py-3 border-2 border-blue-700 hover:bg-blue-700 hover:text-white transition-colors duration-300 transform hover:scale-105">
                             Download Full Schedule
                         </button>
                     </div>
@@ -405,7 +435,7 @@ const sectionRefs = {
             </section>
 
             {/* Footer */}
-            <footer className="bg-white text-blue-700 py-12 border-t border-blue-100">
+            <footer id="footer" className="bg-white text-blue-700 py-12 border-t border-blue-100">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                         <div>
@@ -417,10 +447,10 @@ const sectionRefs = {
                         <div>
                             <h3 className="text-lg font-semibold mb-4 text-blue-900">Quick Links</h3>
                             <ul className="space-y-2">
-                                <li><a href="#" className="hover:text-blue-900">Home</a></li>
+                                <li><a onClick={scrollToHero} className="hover:text-blue-900">Home</a></li>
                                 <li><a href="#" className="hover:text-blue-900">About</a></li>
-                                <li><a href="#" className="hover:text-blue-900">Events</a></li>
-                                <li><a href="#" className="hover:text-blue-900">Schedule</a></li>
+                                <li><a onClick={scrollToEvents} className="hover:text-blue-900">Events</a></li>
+                                <li><a onClick={scrollToSchedule} className="hover:text-blue-900">Schedule</a></li>
                             </ul>
                         </div>
                         <div>
